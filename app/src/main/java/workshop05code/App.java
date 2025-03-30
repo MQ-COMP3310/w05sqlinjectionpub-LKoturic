@@ -38,13 +38,13 @@ public class App {
 
         wordleDatabaseConnection.createNewDatabase("words.db");
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
-            System.out.println("Wordle created and connected.");
+            logger.log(Level.INFO, "Wordle created and connected.");
         } else {
             System.out.println("Not able to connect. Sorry!");
             return;
         }
         if (wordleDatabaseConnection.createWordleTables()) {
-            System.out.println("Wordle structures in place.");
+            logger.log(Level.INFO, "Wordle structures in place.");
         } else {
             System.out.println("Not able to launch. Sorry!");
             return;
@@ -57,18 +57,18 @@ public class App {
             int i = 1;
             while ((line = br.readLine()) != null) {
                 if(line.matches("[a-z]{4}")){
-                    System.out.println(line);
+                    logger.log(Level.INFO, line);
                     wordleDatabaseConnection.addValidWord(i, line);
                 }
                 else{
-                    System.out.println("Unacceptable input");
+                    logger.log(Level.SEVERE,"Ignored unacceptable input: {0}", line);
                 }
                 i++;
             }
 
         } catch (IOException e) {
             System.out.println("Not able to load . Sorry!");
-            System.out.println(e.getMessage());
+            logger.log(Level.WARNING, e.getMessage());
             return;
         }
 
@@ -90,6 +90,7 @@ public class App {
                 }   
                 else{
                     System.out.println("Notice: Please enter a lowercase 4 letter word only");
+                    logger.log(Level.INFO, "Invalid guess: {0}", guess);
                 }
                 System.out.print("Enter a 4 letter word for a guess or q to quit: " );
                 guess = scanner.nextLine();
